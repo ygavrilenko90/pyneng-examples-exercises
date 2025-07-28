@@ -54,7 +54,7 @@ print(template.format(10, 1, 1, 50, 10, 1, 1, 50))
 
 #        10        1        1       50
 #  00001010 00000001 00000001 00110010
-# в шаблоне после ":" выравнивание, до ":" - подстановка оп индексам:
+# в шаблоне после ":" выравнивание, до ":" - подстановка по индексам:
 
 template = "{0:<9}{1:<9}{2:<9}{3:<9}\n{0:08b} {1:08b} {2:08b} {3:08b}"
 print(template.format(192, 168, 100, 1))
@@ -89,10 +89,128 @@ print(f"{oct1:<9}{oct2:<9}{oct3:<9}{oct4:<9}\n{oct1:08b} {oct2:08b} {oct3:08b} {
 
 a = "{} {}"
 print(a.format('one', 'two')) #one two
-#просмотрел 18.06
+
 
 a = 10
 b = "Privet"
 c,d,e = "Medved", ["one", "two", "three"], ("et_1_kort", "el_2_kort")
 
 print(a,b,c,d,e, type(e))
+
+#Если сравнивать format() и f-строки - то format() удобнее, если работаем с разными данными: один раз описали
+# шаблон, далее уже вызываем format(); при использовании f-строк - каждый раз должны прописывать шаблон и вызывать f-строку
+
+######################################
+###### Список  - list() ##############
+# изменяемый упорядоченный тип данных#
+# В других ЯП назвается массив########
+######################################
+#последовательность элементов, разделенных запятыми и заключенных в []
+list1 = [10,20,30,40]
+list2 = ["dog", 1, "example", 2]
+print(list1, list2) #[10, 20, 30, 40] ['dog', 1, 'example', 2]
+
+# варианты объявления списков:
+# 1)
+list1 = ["this", "is",  1 , "list"]
+print(list1, type(list1)) # ['this', 'is', 1, 'list'] <class 'list'>
+
+# 2) запись каждого элемента с новой строки через "," это, как говориться, для "людей":
+list2 = [
+    "this",
+    "is",
+    2,
+    "list"
+]
+print(list2, type(list2)) # ['this', 'is', 2, 'list'] <class 'list'>
+
+# Получение списка из строки - split()
+test = "1,2,3,4,5"
+print(test.split(',')) #['1', '2', '3', '4', '5']
+
+# list() применяя к строке - получим список символов
+print(list('test')) #['t', 'e', 's', 't']
+
+vlans = [1, 10, 100, 1280, 1928]
+print(vlans[-1]) #1928
+
+# список - изменяемый тип данных, его можно менять на месте:
+vlans[1] = 99
+print(vlans) #[1, 99, 100, 1280, 1928]
+
+###Список списков  - в других ЯП это называется многомерный массив (array)
+cfg_vrf = [
+['ne40x-1-batovo.bobruysk.tehno',     'P6BBBT-ABATER01.cfg',                  'BELPAK-BBR-BATOVA', 'vlanif100'],
+['ne40x-1-park.bobruysk.tehno',       'P6BBPR-APARER01.cfg',                  'BELPAK-BBR-PARK', 'vlanif100'],
+]
+print(cfg_vrf[0]) #['ne40x-1-batovo.bobruysk.tehno', 'P6BBBT-ABATER01.cfg', 'BELPAK-BBR-BATOVA', 'vlanif100']
+print(cfg_vrf[0][0]) #ne40x-1-batovo.bobruysk.tehno
+print(cfg_vrf[1][0]) #ne40x-1-park.bobruysk.tehno
+print(cfg_vrf[1][0][0:4]) #ne40 - можно и так - потому что каждая операция возвращает строку(итерируемый объект)
+
+print(len(cfg_vrf)) #2
+print(len(vlans)) #5
+vlans2 = [34, 934, 2, 23, 12]
+print(sorted(vlans2)) #[2, 12, 23, 34, 934]
+
+#Меняем элемент списка налету:
+cfg_vrf[0][0] = "Other Neshka"
+print(cfg_vrf) #[['Other Neshka', 'P6BBBT-ABATER01.cfg', 'BELPAK-BBR-BATOVA', 'vlanif100'], ['ne40x-1-park.bobruysk.tehno', 'P6BBPR-APARER01.cfg', 'BELPAK-BBR-PARK', 'vlanif100']]
+
+other_list  = [
+[10, "this",  "is" "ten" "string"],
+[2, "second", "string"],
+]
+print(sorted(other_list)) #[[2, 'second', 'string'], [10, 'this', 'istenstring']] - сортирует по возрастанию по первому полю элемента
+
+# есть список вланов - задача  вывести список из уникальных вланов
+# решение: использовать тип данных set()
+vlan_test = [1, 2, 99, 13, 100, 200, 2, 99]
+print(set(vlan_test)) #{1, 2, 99, 100, 200, 13}
+
+#строки можно сравнивать:
+print("aac" < "awww") #True
+
+###методы строк ###
+#append() #clear() copy() count() extend() index() insert() pop() remove() reverse() sort()
+
+#sort() метод работает только на списках:
+vlans = [1, 100, 99, 13, 999]
+print(vlans.sort()) # None  - сам метод sort() ничего не возвращает
+# Метод sort() меняет список на месте, т.е меняет элементы в первоначальном списке, а не создает его копию и сортирует её
+print(vlans) #[1, 13, 99, 100, 999] - теперь и дальше vlans = [1, 13, 99, 100, 999]
+
+#sorted - функция применима для всех типов данных (в отличие от sort() - только для списков)
+print(sorted("test")) #['e', 's', 't', 't']
+vlans = [1, 100, 99, 13, 999]
+print(sorted(vlans)) #[1, 13, 99, 100, 999] # при использовании sorted() создается новый сортированный список
+print(vlans) #[1, 100, 99, 13, 999] - первоначальный список остается неизменным
+
+#метод count() - возвращает количество заданных элементов
+vlans = [1, 100, 99, 2, 2, 13, 999]
+print(vlans.count(2)) #2
+
+# метод append() - добавляет в конец списка элемент, только один - метод тоже ничего не возвращает:
+print(vlans.append(300)) #None
+vlans.append(500)
+print(vlans) #[1, 100, 99, 2, 2, 13, 999, 300, 500]
+
+vlans = []
+
+for i in range(10):
+    vlans.append(i)
+print(vlans) #[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+vlans.append([100, 200])
+print(vlans) #[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, [100, 200]]
+
+vlans = [1,2,3,4]
+vlans2 = [5,6,7]
+vlans.extend(vlans2)
+print(vlans) #[1, 2, 3, 4, 5, 6, 7]
+vlans.extend([17, 19, 23])
+print(vlans) #[1, 2, 3, 4, 5, 6, 7, 17, 19, 23]
+
+vlans1 = ["one", "two", "three"]
+vlans2 = ["four", "five"]
+print(vlans1 + vlans2) #['one', 'two', 'three', 'four', 'five']
